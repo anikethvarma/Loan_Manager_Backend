@@ -135,11 +135,10 @@ app.get("/api/users/details", authenticateToken, async (req, res) => {
 app.get("/api/users/detail", async (req, res) => {
   try {
     await client.connect();
-    const { username } = req;
     const database = client.db("loan-manager");
     const collection = database.collection("users");
-    const members = await collection.findOne({ username: username });
-    res.send(JSON.stringify(members));
+    const members = await collection.findOne();
+    res.json(members)
   } catch (error) {
     res.status(500).send(error.message);
   } finally {
