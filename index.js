@@ -132,19 +132,6 @@ app.get("/api/users/details", authenticateToken, async (req, res) => {
   }
 });
 
-app.get("/api/users/detail", async (req, res) => {
-  try {
-    await client.connect();
-    const database = client.db("loan-manager");
-    const collection = database.collection("users");
-    const members = await collection.findOne();
-    res.json(members)
-  } catch (error) {
-    res.status(500).send(error.message);
-  } finally {
-    await client.close();
-  }
-});
 
 app.post("/api/new-loan", authenticateToken, async (req, res) => {
   try {
