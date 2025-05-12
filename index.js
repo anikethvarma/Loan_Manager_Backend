@@ -5,6 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 var moment = require('moment');
+const { stringify } = require('flatted');
 
 
 const uri = "mongodb+srv://anikethvarma:abc1234@cluster0.aic6s.mongodb.net/";
@@ -158,7 +159,7 @@ app.get("/api/users/my-loans", authenticateToken, async (req, res) => {
     const { username } = req;
     const database = client.db("loan-manager");
     const collection = database.collection("loans");
-    const myLoans = await collection.find({ username: username });
+    const myLoans = await collection.find({ username: username }).toArray();
     res.json(myLoans);
   } catch (error) {
     res.status(500).send(error.message);
@@ -174,7 +175,7 @@ app.get("/api/verifier/all-loans", authenticateToken, async (req, res) => {
     const { username } = req;
     const database = client.db("loan-manager");
     const collection = database.collection("loans");
-    const loans = await collection.find({ verifier: username });
+    const loans = await collection.find({ verifier: username }).toArray();
     res.json(loans);
   } catch (error) {
     res.status(500).send(error.message);
@@ -188,7 +189,7 @@ app.get("/api/admin/all-loans", authenticateToken, async (req, res) => {
     await client.connect();
     const database = client.db("loan-manager");
     const collection = database.collection("loans");
-    const loans = await collection.find();
+    const loans = await collection.find().toArray();
     res.json(loans);
   } catch (error) {
     res.status(500).send(error.message);
